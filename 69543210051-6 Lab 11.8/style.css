@@ -1,0 +1,24 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+.run-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.run-btn:hover {
+    background-color: #555;
+}
+
+#output {
+    font-size: 18px;
+    line-height: 1.5;
+}
