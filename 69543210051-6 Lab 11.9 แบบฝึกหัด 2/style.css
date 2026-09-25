@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #e68a00;
+}
+
+#outputBox {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    min-height: 100px;
+    max-width: 400px;
+    border-left: 8px solid #ffcc00;
+    font-size: 16px;
+    line-height: 1.6;
+}
