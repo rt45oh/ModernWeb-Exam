@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+button {
+    background-color: #00c3ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+button:hover {
+    background-color: #00a3cc;
+}
+
+#output {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    min-height: 80px;
+    max-width: 400px;
+    border-left: 5px solid #00ff00;
+    font-size: 16px;
+    line-height: 1.6;
+}
