@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ENGCC304 - Lab 12.10</title>
+  <style>
+    :root { --ink:#17263a; --muted:#617086; --line:#dce5f0; --paper:#fff; --canvas:#f7f9fc; --primary:#0d6efd; --primary-soft:#edf5ff; --warning:#9a6700; --warning-soft:#fff8de; --success:#166534; --success-soft:#eef8f1; --danger:#b42318; --danger-soft:#fff1f2; --code:#102237; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--canvas); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; user-select:none; -webkit-user-select:none; }
+    main { width:min(1120px,calc(100% - 32px)); margin:0 auto; padding:30px 0 54px; }
+    .page { padding:26px; border:1px solid #e2e8f0; border-radius:18px; background:var(--paper); box-shadow:0 9px 26px rgba(15,23,42,.055); }
+    h1 { margin:0; font-size:clamp(1.45rem,3vw,2rem); line-height:1.2; }
+    h2 { margin:0 0 12px; font-size:1.08rem; } h3 { margin:0 0 8px; font-size:.93rem; }
+    .lab-status-strip { display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:13px 0 16px; }
+    .lab-status-pill,.badge-pill { display:inline-flex; align-items:center; min-height:26px; padding:0 9px; border:1px solid #d6dfeb; border-radius:999px; background:#fff; color:#415266; font-size:.75rem; font-weight:700; }
+    .lab-status-pill.tone-runner { background:#eef6ff; border-color:#c6ddff; color:#174ea6; } .lab-status-pill.tone-ready { background:var(--success-soft); border-color:#b9ddc3; color:var(--success); }
+    .badge-pill.tone-score { background:var(--success-soft); border-color:#b9ddc3; color:var(--success); } .badge-pill.tone-status { background:#fff8de; border-color:#ecd58d; color:#8a6500; }
+    .badge-pill.tone-deadline { background:var(--danger-soft); border-color:#efc0c5; color:var(--danger); } .badge-pill.tone-attempt { background:#f4f6f8; color:#667085; }
+    .subtle-note { margin:-7px 0 16px; color:var(--muted); font-size:.86rem; }
+    .alert-box { margin:0 0 14px; padding:13px 15px; border:1px solid; border-radius:10px; } .alert-box ul { margin:7px 0 0; padding-left:20px; } .alert-box.warning { border-color:#f2d394; background:var(--warning-soft); color:#5d3907; } .alert-box.info { border-color:#b9daf8; background:var(--primary-soft); color:#17406d; }
+    .policy-card,.rubric-card { margin:0 0 18px; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; } .policy-card summary,.rubric-card summary { cursor:pointer; color:#1f4f8d; font-weight:700; } .policy-card ul { margin:12px 0 0; padding-left:22px; color:#43546a; }
+    .policy-content { margin-top:14px; color:#43546a; font-size:.92rem; } .policy-content .alert-box { margin-bottom:16px; } .policy-content .alert-box p { margin:7px 0 0; } .policy-weights { margin:0 0 15px; } .policy-rule + .policy-rule { margin-top:16px; } .policy-rule h3 { color:#253c58; } .policy-rule ul { margin:7px 0 0; }
+    .rubric-card { padding:0; overflow:hidden; } .rubric-card summary { padding:13px 14px; border-bottom:1px solid var(--line); } .rubric-table-wrap { overflow:auto; } .rubric-table { width:100%; min-width:740px; border-collapse:collapse; color:#34465d; font-size:.88rem; } .rubric-table th,.rubric-table td { border:1px solid #d7e0ea; padding:10px; text-align:left; vertical-align:top; } .rubric-table th { background:#f1f4f8; color:#24364c; } .rubric-table tr.chosen td { background:#effaf2; } .rubric-score { display:inline-block; margin-left:5px; padding:1px 6px; border-radius:99px; background:#daf3e0; color:#166534; font-size:.76rem; white-space:nowrap; }
+    .lab-section { padding:18px 0; border-top:1px solid #e6edf5; } .problem-area { overflow-wrap:anywhere; } .problem-area ul,.problem-area ol { margin:0 0 1rem; padding-left:1.25rem; } .problem-area li + li { margin-top:7px; } .problem-area p { margin:0 0 1rem; }
+    .problem-area .lab-note-box,.problem-area .alert.alert-info { margin-top:16px; padding:14px 16px; border:1px solid #b9d6ff; border-radius:16px; background:linear-gradient(180deg,#eff7ff 0%,#f7fbff 100%); color:#17406d; line-height:1.65; } .problem-area .lab-note-title { display:block; margin-bottom:8px; color:#0f3a68; font-weight:700; } .problem-area .lab-note-text:last-child { margin-bottom:0; } .problem-area .lab-note-list { margin-bottom:0; padding-left:20px; } .problem-area pre.lab-note-code { margin:10px 0 0; padding:12px 14px; border:1px solid #d7e8ff; border-radius:12px; background:#f8fbff; color:#12395d; white-space:pre-wrap; } .problem-area code.lab-note-inline { padding:2px 6px; border-radius:6px; background:#e8f2ff; color:#0f3a68; }
+    .code-table { overflow:auto; border:1px solid #6b7c90; border-radius:4px; } pre { margin:0; padding:15px; overflow:auto; background:var(--code); color:#eaf5ff; font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; user-select:none; -webkit-user-select:none; }
+    .testcase-row + .testcase-row { margin-top:17px; } .testcase-row table { width:100%; border-collapse:collapse; table-layout:fixed; } .testcase-row th,.testcase-row td { border:1px solid #6b7c90; padding:9px 11px; vertical-align:top; text-align:left; } .testcase-row th { background:#f0f2f5; } .testcase-row td pre { padding:0; background:transparent; color:var(--ink); white-space:pre-wrap; user-select:none; -webkit-user-select:none; }
+    .runner-note { margin:17px 0 0; padding:12px 14px; border-left:4px solid var(--primary); background:#f2f8ff; color:#34516f; font-size:.88rem; } .footer { margin:22px 0 0; color:var(--muted); text-align:center; font-size:.78rem; }
+    @media (max-width:640px) { main { width:min(100% - 18px,1120px); padding-top:10px; } .page { padding:18px 14px; border-radius:13px; } .lab-status-strip { gap:5px; } .testcase-row table { min-width:520px; } .testcase-row { overflow:auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="page">
+      <h1>ENGCC304 - Lab 12.10</h1>
+      <div class="lab-status-strip"><span class="lab-status-pill tone-runner">Lab Box Only</span><span class="badge-pill tone-deadline">Deadline: Deadline บันทึกใน Lab Box เท่านั้น</span></div>
+      <div class="subtle-note">กำลังใช้สถาปัตยกรรม offline-first</div>
+      
+      
+    <details class="policy-card"><summary>กติกาการใช้งานและการส่งงาน</summary><ul><li><strong>Lab Box Local Check</strong> สามารถ Run ในเครื่องและเก็บ shadow evidence ได้ การส่งงานทางการยังใช้ Lab Box Stable</li><li><strong>c · 4 case · 5s</strong> Testcases และ runtime metadata ถูกอ่านจาก Lab Pack ในเครื่อง</li></ul></details>
+      
+    <details class="policy-card grading-policy-card"><summary>เกณฑ์การให้คะแนนและการหักคะแนน</summary>
+      <div class="policy-content">
+        <div class="alert-box warning"><strong>ข้อกำหนดสำคัญ</strong><p>งานนี้มีจุดประสงค์เพื่อประเมินความเข้าใจจากเนื้อหาที่เรียนมา ผู้เรียนควรสามารถอธิบายแนวคิดและลำดับการทำงานของโค้ดที่ส่งได้</p></div>
+        <p class="policy-weights">คะแนนถูกแบ่งตาม CLO ของรายวิชานี้คือ <strong>CLO1 = 40</strong>, <strong>CLO2 = 20</strong>, <strong>CLO3 = 20</strong></p>
+        <section class="policy-rule"><h3>1) หลักการตัดสินโดยรวม</h3><ul><li>ระบบเริ่มต้นที่ 100 คะแนน และพิจารณาทั้งความถูกต้องของคำตอบ ความสอดคล้องกับเนื้อหาที่สอน ความซื่อสัตย์ทางวิชาการ และหลักฐานการรันที่จำเป็น</li><li>การตรวจมีเป้าหมายเพื่อยืนยันว่าโค้ดที่ส่งมานั้นเป็นผลงานที่ผู้เรียนสามารถอธิบายที่มา เหตุผล และลำดับการแก้ปัญหาได้จริง</li></ul></section><section class="policy-rule"><h3>2) กรณีตัดคะแนนเหลือ 0 ทันที</h3><ul><li>ส่งโค้ดคนละภาษากับที่โจทย์ข้อนี้กำหนด เช่น โจทย์ Java แต่ส่ง #include, scanf, printf, cout หรือ cin หรือโจทย์ C แต่ส่งโครงสร้างแบบ public class, System.out หรือ Scanner</li><li>ในโจทย์ภาษา C หากใช้รูปแบบ if (scanf(...)) หรือเอา scanf ไปใส่เป็น statement ภายในเงื่อนไข if โดยตรง ระบบจะตีความว่าเป็นรูปแบบที่ผิดเกณฑ์ของรายวิชาและเป็นสัญญาณการพึ่ง AI จึงมีสิทธิ์ตัดคะแนนทันที</li><li>ใช้ recursion หรือวิธีแก้ปัญหาที่เกินขอบเขตเนื้อหาที่เรียนในช่วงเวลานี้ เช่น ใช้เทคนิคที่ผู้สอนยังไม่สอนเพื่อข้ามสาระหลักที่โจทย์ต้องการวัด</li><li>ใช้ syntax, library หรือ abstraction ขั้นสูงที่เกินบทเรียนของโจทย์นั้น แม้จะอยู่ในภาษาเดียวกันก็ตาม</li></ul></section><section class="policy-rule"><h3>3) ความหมายของ “เกินเนื้อหาที่สอน”</h3><ul><li>ระบบจะอิงจากภาษาและแนวทางที่โจทย์ข้อนั้นกำหนดก่อนเสมอ บางข้อเป็นภาษา C บางข้อเป็นภาษา Java จึงไม่ใช้เกณฑ์ของอีกภาษามาตัดสินแบบเหมารวม</li><li>ถ้าโจทย์ตั้งขึ้นเพื่อวัดความเข้าใจเนื้อหาพื้นฐานที่สอนในภาษานั้น แต่คำตอบใช้เทคนิคที่ล้ำไปมากจนหลีกเลี่ยงสาระการเรียนรู้หลักของโจทย์ ระบบจะถือว่าไม่สอดคล้องกับวัตถุประสงค์ของงาน</li><li>การใช้ AI เพื่อสร้างคำตอบที่ผู้เรียนอธิบายที่มาไม่ได้ หรือใช้ pattern ที่ผู้เรียนยังไม่เรียนและยังไม่เข้าใจ จะถูกมองว่าไม่ก่อให้เกิดการเรียนรู้ตามที่รายวิชาต้องการ</li></ul></section><section class="policy-rule"><h3>4) รายการที่หักคะแนนเพราะใช้สิ่งที่ยังไม่สอนหรือเกินขอบเขต</h3><ul><li>คำสั่งหรือ library ที่อยู่นอกขอบเขตของโจทย์นั้น เช่น file I/O, dynamic memory, concurrency, stream/lambda, library เฉพาะทาง หรือ API ขั้นสูงที่ยังไม่สอน</li><li>syntax หรือ keyword ของอีกภาษา ที่ทำให้คำตอบไม่อยู่ในกรอบของโจทย์</li><li>คำสั่งหรือโครงสร้างอื่นที่มีผลเทียบเท่าการข้ามไปใช้แนวคิดที่ยังไม่ผ่านการสอนอย่างเป็นทางการ</li></ul></section><section class="policy-rule"><h3>5) การหักคะแนนด้าน syntax และความถูกต้องของโค้ด</h3><ul><li>ถ้าโจทย์เป็นงานโปรแกรมเต็มและไม่พบ main() ระบบอาจหักคะแนนด้านความสมบูรณ์ของโค้ด แต่โจทย์ที่ตั้งใจให้ส่งเป็นฟังก์ชันจะพิจารณาจากฟังก์ชันตามที่กำหนดได้แม้ไม่มี main()</li><li>วงเล็บ (), {}, [] ไม่สมดุล หรือมีรูปแบบที่บ่งชี้ชัดว่า syntax ยังผิด</li><li>string literal ปิดไม่ครบ หรือรูปแบบข้อความไม่สมบูรณ์จนมีผลต่อการคอมไพล์หรือการแสดงผล</li><li>โค้ดสั้นเกินไปหรือไม่เพียงพอต่อการประเมินว่าได้แก้โจทย์จริงครบตามที่กำหนด</li></ul></section><section class="policy-rule"><h3>6) หลักฐานประกอบการพิจารณา</h3><ul><li>ไม่มี Program Output: หัก 10 คะแนน เพราะขาดหลักฐานยืนยันผลการรัน</li><li>ลิงก์ GitHub, Flowchart, YouTube, Debug Sheet และเอกสารแนบอื่น ๆ ไม่ถูกบังคับและไม่ถูกใช้คิดคะแนนในรอบนี้</li><li>ถ้าส่งผ่าน Lab Runner และ Local Check ผ่านครบทุก testcase ระบบจะถือว่าผ่านด่าน testcase แล้ว แต่ยังตรวจโค้ดที่ submit ต่ออีกชั้นตามเกณฑ์การให้คะแนน การหักคะแนน และความซื่อสัตย์ทางวิชาการ จึงไม่ใช่การการันตี 100/100 อัตโนมัติ</li></ul></section><section class="policy-rule"><h3>7) การพิจารณาเรื่อง AI และความซื่อสัตย์ทางวิชาการ</h3><ul><li>การใช้ AI เพื่อช่วยคิดคำอธิบายหรือช่วยตรวจ syntax บางส่วนอาจไม่ใช่ประเด็นหลัก หากผู้เรียนยังเป็นผู้ลงมือคิด แก้ และอธิบายวิธีทำได้ด้วยตนเอง</li><li>แต่ถ้าใช้ AI สร้างคำตอบแทบทั้งหมด แล้วนำมาส่งทั้งก้อนโดยไม่เข้าใจเหตุผลของโค้ด โครงสร้างคำตอบ หรือเทคนิคที่ใช้ ระบบจะถือว่าไม่เป็นไปตามเจตนาของงาน</li></ul></section><section class="policy-rule"><h3>8) ขอบเขตของการอุทธรณ์หรือโต้แย้งผล</h3><ul><li>หากผู้เรียนต้องการโต้แย้งผล ควรสามารถอธิบายโค้ดของตนได้ทีละส่วน อธิบายเหตุผลที่เลือกโครงสร้างคำสั่งนั้น และเชื่อมโยงกับบทเรียนที่เรียนจริงได้</li><li>ระบบนี้จึงทำหน้าที่เป็นด่านคัดกรองเบื้องต้นเพื่อส่งสัญญาณชัดเจนว่า การส่งคำตอบที่ไม่ได้สะท้อนการเรียนรู้จริงย่อมมีความเสี่ยงด้านคะแนนอย่างมีนัยสำคัญ</li></ul></section>
+      </div>
+    </details>
+      <section class="lab-section"><h2>Problem</h2><div class="problem-area">Lab 12.10 บอกชนิดของจำนวน
+<br><br>
+<strong>โจทย์:</strong><br>
+เขียนโปรแกรมรับจำนวนเต็ม 1 จำนวน แล้วสร้างฟังก์ชัน <code>void showSign(int n)</code> เพื่อแสดงคำว่า <code>Positive</code> ถ้าเป็นจำนวนบวก, <code>Negative</code> ถ้าเป็นจำนวนลบ, และ <code>Zero</code> ถ้าค่าเท่ากับศูนย์
+<br><br>
+<strong>ข้อมูลนำเข้า:</strong><br>
+จำนวนเต็ม 1 จำนวน
+<br><br>
+<strong>ข้อมูลส่งออก:</strong><br>
+คำว่า <code>Positive</code>, <code>Negative</code> หรือ <code>Zero</code>
+<div class="lab-note-box"><span class="lab-note-title">Starter Code สำหรับแก้ในไฟล์งาน</span><p class="lab-note-text">Lab ข้อนี้มีโค้ดตั้งต้นทั้งโปรแกรม ให้เปิดไฟล์งานที่ Runner สร้างขึ้นมาแล้วแก้จากโค้ดชุดนี้ได้เลย</p><pre><code>#include 
+
+void showSign(int n);
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    showSign(n);
+    return 0;
+}
+
+void showSign(int n) {
+    /* your code */
+}</code></pre></div></div></section>
+      <section class="lab-section"><h2>เกร็ดความรู้</h2><div class="problem-area"><div class="lab-note-box">
+  <span class="lab-note-title">เกร็ดความรู้เฉพาะเรื่องนี้</span>
+  <p class="lab-note-text">โจทย์นี้ช่วยแยกบทบาทให้ชัดว่า parameter ใช้ส่งข้อมูลเข้าไป และฟังก์ชันสามารถตัดสินใจพร้อมแสดงผลได้โดยไม่ต้อง return ค่า</p>
+</div></div></section>
+      
+      
+      <section class="lab-section"><h2>Test Case</h2>
+      <section class="testcase-row">
+        <h3>Case 1</h3>
+        <table><thead><tr><th>Input</th><th>Output</th></tr></thead><tbody><tr>
+          <td><pre>5</pre></td>
+          <td><pre>Positive</pre></td>
+        </tr></tbody></table>
+      </section>
+      <section class="testcase-row">
+        <h3>Case 2</h3>
+        <table><thead><tr><th>Input</th><th>Output</th></tr></thead><tbody><tr>
+          <td><pre>-2</pre></td>
+          <td><pre>Negative</pre></td>
+        </tr></tbody></table>
+      </section>
+      <section class="testcase-row">
+        <h3>Case 3</h3>
+        <table><thead><tr><th>Input</th><th>Output</th></tr></thead><tbody><tr>
+          <td><pre>0</pre></td>
+          <td><pre>Zero</pre></td>
+        </tr></tbody></table>
+      </section>
+      <section class="testcase-row">
+        <h3>Case 4</h3>
+        <table><thead><tr><th>Input</th><th>Output</th></tr></thead><tbody><tr>
+          <td><pre>99</pre></td>
+          <td><pre>Positive</pre></td>
+        </tr></tbody></table>
+      </section></section>
+      
+    <details class="rubric-card" open><summary>เกณฑ์การประเมิน (Rubric)</summary>
+      <div class="rubric-table-wrap"><table class="rubric-table"><thead><tr><th>Criterion title</th><th>Criterion description</th><th>Level title</th><th>Points</th></tr></thead><tbody>
+        <tr><td rowspan="4"><strong>CLO1 · อธิบายองค์ประกอบพื้นฐานของคอมพิวเตอร์และหลักการทำงานระหว่างฮาร์ดแวร์กับซอฟต์แวร์ได้</strong></td><td rowspan="4">เกณฑ์นี้อิงจาก CLO ของรายวิชาตามค่าที่ตั้งไว้ในระบบสำหรับคอร์สนี้</td><td>ดีเยี่ยม</td><td>40</td></tr><tr><td>ดี</td><td>30</td></tr><tr><td>พอใช้</td><td>20</td></tr><tr><td>ต้องปรับปรุง</td><td>10</td></tr><tr><td rowspan="4"><strong>CLO2 · เขียนโปรแกรมโดยใช้โครงสร้างพื้นฐานของภาษาโปรแกรม ได้แก่ ตัวดำเนินการ โครงสร้างควบคุม ฟังก์ชัน และอาร์เรย์ได้</strong></td><td rowspan="4">เกณฑ์นี้อิงจาก CLO ของรายวิชาตามค่าที่ตั้งไว้ในระบบสำหรับคอร์สนี้</td><td>ดีเยี่ยม</td><td>20</td></tr><tr><td>ดี</td><td>15</td></tr><tr><td>พอใช้</td><td>10</td></tr><tr><td>ต้องปรับปรุง</td><td>5</td></tr><tr><td rowspan="4"><strong>CLO3 · สร้างอัลกอริทึมและผังงานเพื่อแก้ปัญหาในงานวิศวกรรมเบื้องต้นได้</strong></td><td rowspan="4">เกณฑ์นี้อิงจาก CLO ของรายวิชาตามค่าที่ตั้งไว้ในระบบสำหรับคอร์สนี้</td><td>ดีเยี่ยม</td><td>20</td></tr><tr><td>ดี</td><td>15</td></tr><tr><td>พอใช้</td><td>10</td></tr><tr><td>ต้องปรับปรุง</td><td>5</td></tr>
+      </tbody></table></div>
+    </details>
+      <div class="runner-note">หน้านี้เป็นสำเนาโจทย์จาก Lab Pack ในเครื่องสำหรับอ่านรายละเอียดเท่านั้น ให้เขียนโค้ด, Run และ Submit ผ่าน VS Code Lab Box</div>
+    </article>
+    <p class="footer">Lab 12.10 · เปิดจากไฟล์ในเครื่อง</p>
+  </main>
+  <script>
+    (() => {
+      const prevent = (event) => event.preventDefault();
+      ['copy', 'cut', 'contextmenu', 'dragstart', 'selectstart'].forEach((name) => document.addEventListener(name, prevent, { capture: true }));
+      document.addEventListener('keydown', (event) => {
+        const key = event.key.toLowerCase();
+        if (event.key === 'F12' || ((event.ctrlKey || event.metaKey) && ['c', 'u', 's', 'p'].includes(key)) || ((event.ctrlKey || event.metaKey) && event.shiftKey && ['i', 'j', 'c'].includes(key))) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, { capture: true });
+    })();
+  </script>
+</body>
+</html>

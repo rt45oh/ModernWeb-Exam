@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <title>ตัวอย่าง การใช้ตัวแปร Javascript</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+#include <stdio.h>
 
-    <button onclick="runDemo()">Run Code</button>
-    
-    <div id="outputBox"></div>
+int sumTwo(int a, int b) {
+    return a + b;
+}
 
-    <script src="script.js"></script>
-
-</body>
-</html>
+int main() {
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    printf("%d\n", sumTwo(num1, num2));
+    return 0;
+}
